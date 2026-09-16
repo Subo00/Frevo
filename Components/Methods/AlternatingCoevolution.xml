@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frevo SYSTEM "..//IComponent.dtd">
+
+<icomponent>
+  <config>
+    <entry key="version"     type="STRING" value="1.00"/>
+    <entry key="classdir"    type="STRING" value="AlternatingCoevolution/alternatingcoevolution"/>
+    <entry key="classname"   type="STRING" value="alternatingcoevolution.AlternatingCoevolution"/>
+    <entry key="name"        type="STRING" value="AlternatingCoevolution"/>
+    <entry key="description" type="STRING" value="alternating predator/prey co-evolution evaluated against a sampled set of the other side's top individuals (opponentSampleSize), rather than a single frozen champion. Tied specifically to the predatorprey.PredatorPrey problem."/>
+    <entry key="tags"        type="STRING" value="predator prey coevolution alternating"/>
+  </config>
+
+  <properties>
+    <propentry key="populationSize"       type="INT"    value="40"   description="Size of EACH population (predator and prey each get this many)."/>
+    <propentry key="generationsPerSide"   type="INT"    value="20"   description="Generations each side evolves before swapping to the other."/>
+    <propentry key="opponentSampleSize"   type="INT"    value="3"    description="Number of top opponent candidates (K) frozen at each swap and evaluated against; fitness is averaged over K. Higher K = more accurate but K times slower."/>
+    <propentry key="totalGenerations"     type="INT"    value="500"  description="Total generations across BOTH sides combined."/>
+    <propentry key="eliteFraction"        type="FLOAT"  value="0.10" description="Fraction of each population carried over unchanged each generation."/>
+    <propentry key="mutationSeverity"     type="FLOAT"  value="0.30" description="How strongly a mutated weight is perturbed."/>
+    <propentry key="mutationProbability"  type="FLOAT"  value="0.15" description="Per-weight probability of mutation, passed into the representation's own mutate() call."/>
+    <propentry key="tournamentSize"       type="INT"    value="3"    description="Number of candidates compared per tournament-selection draw."/>
+    <propentry key="saveInterval"         type="INT"    value="5"    description="Save a .zre every N generations (1 = every generation)."/>
+  </properties>
+</icomponent>

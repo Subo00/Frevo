@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frevo SYSTEM "..//IComponent.dtd">
+
+<icomponent>
+  <config>
+	<entry key="author" type="STRING" value="Ernest Subotić"/>
+    	<entry key="classdir" type="STRING" value="PredatorPrey/predatorprey"/>
+    	<entry key="classname" type="STRING" value="predatorprey.PredatorPrey"/>
+	<entry key="name" type="STRING" value="PredatorPrey"/>
+	<entry key="description" type="STRING" value="A predator prey simulation"/>
+	<entry key="image" type="STRING" value="PredatorPrey.png"/>
+	<entry key="tags" type="STRING" value="PredatorPrey TAG"/>
+	<entry key="image" type="STRING" value="predatorprey.png"/>
+  </config>
+   <properties>
+    <propentry key="gridRadius"          type="INT"   value="8"   description="Hex grid radius."/>
+    <propentry key="numberOfPredators"   type="INT"   value="5"   description="Number of predators."/>
+    <propentry key="numberOfPrey"        type="INT"   value="20"  description="Number of prey (evolved brain)."/>
+    <propentry key="maximumSteps"        type="INT"   value="500" description="Steps per simulation run."/>
+    <propentry key="agentInitEnergy"     type="FLOAT" value="100" description="Starting energy of agents."/>
+    <propentry key="energyDecayPredator" type="FLOAT" value="2.0" description="Predator energy lost per step."/>
+    <propentry key="energyDecayPrey"     type="FLOAT" value="1.0" description="Prey energy lost per step."/>
+    <propentry key="energyGainCatch"     type="FLOAT" value="40"  description="Energy predator gains on catch."/>
+    <propentry key="foodEatAmount"       type="INT"   value="30"  description="Food consumed per eat-action."/>
+    <propentry key="foodEnergyGain"      type="FLOAT" value="15"  description="Energy per food unit eaten."/>
+    <propentry key="foodInitMin"         type="INT"   value="0"   description="Min starting food per cell."/>
+    <propentry key="foodInitMax"         type="INT"   value="50"  description="Max starting food per cell."/>
+  </properties>
+
+  <requirements>
+    <reqentry key="inputnumber" type="INT" value="10"/>
+    <reqentry key="outputnumber" type="INT" value="7"/>
+    <reqentry key="minimumCandidates" type="INT" value="1"/>
+    <reqentry key="maximumCandidates" type="INT" value="1"/>
+  </requirements>
+</icomponent>
