@@ -85,7 +85,10 @@ public class Agent {
 
     // ── energy / alive ────────────────────────────────────────────────────────
     public double getEnergy()         { return energy; }
-    public void   addEnergy(double d) { energy = Math.max(0, energy + d); }
+    /** FIX: energy is capped (was unbounded: one prey bite gave up to 450 energy,
+     *  so the energy input reached ~40 and predator catch weights went negative). */
+    public static double MAX_ENERGY = 100.0;
+    public void   addEnergy(double d) { energy = Math.min(MAX_ENERGY, Math.max(0, energy + d)); }
 
     public boolean isAlive() { return alive; }
     public void    die()     { alive = false; }

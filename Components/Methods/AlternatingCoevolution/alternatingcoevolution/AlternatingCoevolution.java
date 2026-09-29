@@ -265,6 +265,9 @@ public class AlternatingCoevolution extends AbstractMethod {
             source.exportToXmlElement(scratch);
             AbstractRepresentation clone = representationData.getNewRepresentationInstance(0, 0, null);
             clone.loadFromXML(scratch.elements().get(0));
+            // FIX: loadFromXML() re-seeds the net's RNG with the fixed session seed, so every
+            // clone would apply the *identical* mutation. Hand it the method's live RNG instead.
+            clone.setGenerator(getRandom());
             return clone;
         } catch (Exception e) {
             throw new RuntimeException("[DeltaCoevolution] Failed to clone a representation", e);

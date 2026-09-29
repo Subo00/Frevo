@@ -67,10 +67,18 @@ public class EvolvedController extends Controller {
         int   bestAction = Agent.STAY;    // default: do nothing
         float bestVal    = 0.1f;          // lowered threshold so untrained networks still move
 
+        // FIX: the clipped-linear activation saturates at 1.0, so most outputs tie.
+        // The old strict '>' loop then always picked the LOWEST index (direction 0/1),
+        // which made all agents drift east/north-east. Break ties uniformly at random.
+        int nTies = 0;
         for (int i = 0; i < Math.min(maxOutputs, outputs.size()); i++) {
-            if (outputs.get(i) > bestVal) {
-                bestVal    = outputs.get(i);
-                // Output index 6 maps to the eat action; 0-5 map to move directions
+            float v = outputs.get(i);
+            if (v > bestVal) {
+                bestVal    = v;
+                bestAction = (i == 6) ? Agent.STAY_AND_EAT : i;
+                nTies = 1;
+            } else if (v == bestVal && bestAction != Agent.STAY
+                       && java.util.concurrent.ThreadLocalRandom.current().nextInt(++nTies) == 0) {
                 bestAction = (i == 6) ? Agent.STAY_AND_EAT : i;
             }
         }

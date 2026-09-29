@@ -80,6 +80,7 @@ public class SimulationParameters {
         foodEnergyGain = dblOr(props, "foodEnergyGain", foodEnergyGain);
         foodInitMin    = intOr(props, "foodInitMin",    foodInitMin);
         foodInitMax    = intOr(props, "foodInitMax",    foodInitMax);
+        Agent.MAX_ENERGY = agentInitEnergy;   // FIX: energy cap
     }
 
     // ── helpers ───────────────────────────────────────────────────────────────

@@ -28,7 +28,7 @@
   </properties>
 
   <requirements>
-    <reqentry key="inputnumber" type="INT" value="10"/>
+    <reqentry key="inputnumber" type="INT" value="16"/>
     <reqentry key="outputnumber" type="INT" value="7"/>
     <reqentry key="minimumCandidates" type="INT" value="1"/>
     <reqentry key="maximumCandidates" type="INT" value="1"/>

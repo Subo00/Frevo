@@ -207,59 +207,44 @@ public class SimulationServer {
         agent.setSensorFood(sensor);
     }
     
+    /**
+     * FIX: per-direction cone sensor, two bounded channels per direction.
+     * Old version summed 10^d for prey (farther prey => LARGER value, up to ~9000) and
+     * 10^-d for predators (invisible next to weights of +-2), which saturated every neuron.
+     * New: [0..5] nearest-prey proximity, [6..11] nearest-predator proximity, each in [0,1]
+     * (1 = adjacent, 0 = nothing within MAX_DISTANCE-1 cells).
+     */
     private void calculateSensor(Agent agent)
     {
-    	List<Float> sensor = new ArrayList<>();
-    	
-    	int localQ = agent.getQ();
-    	int localR = agent.getR();
-    	
-    	for(int i = 0; i < 6; i++)
-    	{
-    		Float sensorInput = recursion(localQ, localR, i, 1);
-    		sensor.add(sensorInput);
-    	}
-    	
-    	agent.setSensor(sensor);
-    	
-    	//printSensors(agent);
+        List<Float> preyCh = new ArrayList<>();
+        List<Float> predCh = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            int[] best = { MAX_DISTANCE, MAX_DISTANCE };   // {prey, predator}
+            cone(agent.getQ(), agent.getR(), i, 1, best);
+            preyCh.add(prox(best[0]));
+            predCh.add(prox(best[1]));
+        }
+        List<Float> sensor = new ArrayList<>(preyCh);
+        sensor.addAll(predCh);
+        agent.setSensor(sensor);
     }
-    
-    
-    private void printSensors(Agent agent)
-    {
-    	for(int i = 0; i < 6; i++)
-    		System.out.println("A:" + agent.getId() + " s:" + i + " = " + agent.getSensor().get(i) );
+
+    private static float prox(int d) {
+        return d >= MAX_DISTANCE ? 0f : (float) (MAX_DISTANCE - d) / (MAX_DISTANCE - 1);
     }
-    
-    
-    private float recursion(int q, int r, int pair, int distance)
+
+    private void cone(int q, int r, int pair, int distance, int[] best)
     {
-    	if(distance >= MAX_DISTANCE) return 0;
-    	
-    	int newQ = q + HexCell.DIRECTIONS[pair][0];
-    	int newR = r + HexCell.DIRECTIONS[pair][1];
-    	
-    	if(state.getGrid().getCell(newQ, newR) == null) return 0;
-    	if(state.getGrid().getCell(newQ, newR).getState() == HexCell.CellState.PREY) 
-    		return (float) (Math.pow(10, distance));
-    	if(state.getGrid().getCell(newQ, newR).getState() == HexCell.CellState.PREDATOR) 
-    		return (float) (1.0f/Math.pow(10, distance));
-    	
-    	float returnVal = 0;
-    	if(pair == 0) {
-    		returnVal += recursion(newQ, newR, 5, distance+1);
-    	}else {
-    		returnVal += recursion(newQ, newR, pair-1, distance+1);
-    	}
-    	returnVal += recursion(newQ, newR, pair, distance+1);
-    	if(pair == 5) {
-    		returnVal += recursion(newQ, newR, 0, distance+1);
-    	}else {
-    		returnVal += recursion(newQ, newR, pair+1, distance+1);
-    	}
-    	
-    	return returnVal;
+        if (distance >= MAX_DISTANCE) return;
+        int newQ = q + HexCell.DIRECTIONS[pair][0];
+        int newR = r + HexCell.DIRECTIONS[pair][1];
+        HexCell c = state.getGrid().getCell(newQ, newR);
+        if (c == null) return;
+        if (c.getState() == HexCell.CellState.PREY)     { best[0] = Math.min(best[0], distance); return; }
+        if (c.getState() == HexCell.CellState.PREDATOR) { best[1] = Math.min(best[1], distance); return; }
+        cone(newQ, newR, (pair + 5) % 6, distance + 1, best);
+        cone(newQ, newR, pair,           distance + 1, best);
+        cone(newQ, newR, (pair + 1) % 6, distance + 1, best);
     }
 
     // ── herbivore eating ──────────────────────────────────────────────────────
