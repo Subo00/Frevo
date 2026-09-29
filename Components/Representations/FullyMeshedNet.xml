@@ -34,7 +34,7 @@
 		<propentry key="mutation_rate" type="FLOAT" value="0.2f"
 			description="Range for random changes for each weight and bias value." />
 		<propentry key="activationFunction" type="ENUM"
-			value="LINEAR" enumName="fullyMeshedNet.ActivationFunction"
+			value="SIGMOID" enumName="fullyMeshedNet.ActivationFunction"
 			description="Defines the neuron's activation function." />
 	</properties>
 </icomponent>
