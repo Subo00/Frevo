@@ -1,1 +1,16 @@
 /bin/
+/Agent$Role.class
+/Agent.class
+/Controller.class
+/EvolvedController.class
+/HexCell$CellState.class
+/HexCell.class
+/HexGrid.class
+/PredatorPrey.class
+/RandomController.class
+/SimulationDisplay$DisplayWorker.class
+/SimulationDisplay$DrawPanel.class
+/SimulationDisplay.class
+/SimulationParameters.class
+/SimulationServer.class
+/SimulationState.class
