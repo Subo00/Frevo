@@ -103,7 +103,15 @@ public class AlternatingCoevolution extends AbstractMethod {
                 List<AbstractRepresentation> frozenOpponents =
                         evolvingPreySide ? predatorOpponentSample : preyOpponentSample;
 
+                for (long[] h : predatorprey.EvolvedController.actHist) java.util.Arrays.fill(h, 0);
+                java.util.Arrays.fill(predatorprey.EvolvedController.decisions, 0);
+                java.util.Arrays.fill(predatorprey.EvolvedController.ties, 0);
                 evaluatePopulationAgainstSample(activePop, evolvingPreySide, frozenOpponents, problemData);
+                { int ri = evolvingPreySide ? 1 : 0; long n = Math.max(1, predatorprey.EvolvedController.decisions[ri]);
+                  StringBuilder sb = new StringBuilder("[DIAG] gen " + generation + (evolvingPreySide ? " PREY " : " PRED ") + "actions%:");
+                  for (int i = 0; i < 8; i++) sb.append(String.format(" %.0f", 100.0 * predatorprey.EvolvedController.actHist[ri][i] / n));
+                  sb.append(String.format(" ties=%.0f%%", 100.0 * predatorprey.EvolvedController.ties[ri] / n));
+                  System.out.println(sb); }
                 sortByFitnessDescending(activePop);
 
                 double bestFitness = activePop.get(0).getFitness();

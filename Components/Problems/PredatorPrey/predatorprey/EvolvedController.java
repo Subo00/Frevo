@@ -29,6 +29,12 @@ import core.AbstractRepresentation;
  *   For predators, output [6] is ignored even if it is the maximum.
  */
 public class EvolvedController extends Controller {
+    // DIAG instrumentation
+    public static long[][] actHist = new long[2][8]; // [role][dir0..5, stay, eat]
+    public static long[] ties = new long[2], decisions = new long[2];
+    public static double[] inMin = new double[10], inMax = new double[10], inSum = new double[10]; public static long inN=0;
+    static { java.util.Arrays.fill(inMin, 1e30); java.util.Arrays.fill(inMax, -1e30); }
+
 
     /** The neural network / representation assigned by FREVO. */
     private final AbstractRepresentation representation;
@@ -69,6 +75,11 @@ public class EvolvedController extends Controller {
             }
         }
 
+        int ri = agent.getRole()==Agent.Role.PREY?1:0;
+        int nAtBest=0; for (int i = 0; i < Math.min(maxOutputs, outputs.size()); i++) if (outputs.get(i)==bestVal) nAtBest++;
+        decisions[ri]++; if (nAtBest>1 && bestAction!=Agent.STAY) ties[ri]++;
+        actHist[ri][bestAction>=0?bestAction:(bestAction==Agent.STAY?6:7)]++;
+        for (int i=0;i<inputs.size()&&i<10;i++){double v=inputs.get(i); inMin[i]=Math.min(inMin[i],v); inMax[i]=Math.max(inMax[i],v); inSum[i]+=v;} inN++;
         agent.setIntendedMove(bestAction);
     }
 }

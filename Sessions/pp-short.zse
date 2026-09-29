@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE frevo SYSTEM ".//Components//ISaveSession.dtd">
+<frevo>
+  <sessionconfig>
+    <configentry key="CustomName" type="STRING" value="PPshort"/>
+    <configentry key="NumberofRuns" type="INT" value="1"/>
+    <configentry key="StartingSeed" type="LONG" value="12345"/>
+  </sessionconfig>
+  <problem class="predatorprey.PredatorPrey">
+    <problementry key="gridRadius" type="INT" value="7"/>
+    <problementry key="numberOfPredators" type="INT" value="4"/>
+    <problementry key="numberOfPrey" type="INT" value="15"/>
+  </problem>
+  <method class="alternatingcoevolution.AlternatingCoevolution">
+    <methodentry key="populationSize" type="INT" value="20"/>
+    <methodentry key="generationsPerSide" type="INT" value="10"/>
+    <methodentry key="opponentSampleSize" type="INT" value="1"/>
+    <methodentry key="totalGenerations" type="INT" value="20"/>
+    <methodentry key="saveInterval" type="INT" value="5"/>
+  </method>
+  <representation class="fullyMeshedNet.FullyMeshedNet"/>
+  <ranking class="AbsoluteRanking.AbsoluteRanking"/>
+</frevo>
